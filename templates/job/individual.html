@@ -1,0 +1,195 @@
+{# ------------------------------------------------------- #}
+{# INDIVIDUAL VIEW FOR EACH job #}
+{# This page can use any data from http:localhost:2000/cms/#/form/job/ #}
+{# Webhook uses the SWIG.js (like Djagno/Twig) templating system. Their documentation is here: #}
+{# http://paularmstrong.github.io/swig/docs/tags/ #}
+{# Learn about calling data into Webhook pages here: #}
+{# http://www.webhook.com/docs/template-rules-and-filters/ #}
+{# ------------------------------------------------------- #}
+{# Confused what extends and blocks do? Watch a primer: #}
+{# http://www.webhook.com/docs/template-inheritance-blocks/ #}
+{% extends "templates/partials/base.html" %}
+{# This sets our page <title>. It will append this job's name to the site title defined in base.html #}
+{% block title %}{% parent %} - {{ item.name }}{% endblock %}
+{% block meta %}
+  <meta name="robots" content="noindex,nofollow">
+{% endblock %}
+{% block content %}
+  <p><a href="{{ url('job') }}">View a list of all job</a></p>
+  <h1>{{ item.name }}</h1>
+  <ul>
+      <li>
+        <strong>Name: </strong>
+        {{ item.name }}
+      </li>
+      <li>
+        <strong>Create Date: </strong>
+        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
+        {{ item.create_date|date('F d Y') }}
+      </li>
+      <li>
+        <strong>Last Updated: </strong>
+        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
+        {{ item.last_updated|date('F d Y') }}
+      </li>
+      <li>
+        <strong>Publish Date: </strong>
+        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
+        {{ item.publish_date|date('F d Y') }}
+      </li>
+      <li>
+        <strong>SEO Title: </strong>
+        {{ item.seo_title }}
+      </li>
+      <li>
+        <strong>SEO Description: </strong>
+        {{ item.seo_description }}
+      </li>
+      <li>
+        <strong>Featured Node: </strong>
+        {# Relationship. Note that use the label you set for the relation, not the content-type name. #}
+        {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
+        <a href="{{ url(item.featured_node) }}">{{ item.featured_node.name }}</a>
+      </li>
+      <li>
+        <strong>Header Image: </strong>
+        {# You can pull out a lot more information from the image property. Info here: #}
+        {# http://www.webhook.com/docs/widget-template-reference/#image #}
+        <img src="{{ item.header_image|imageSize(200, 200) }}" />
+      </li>
+      <li>
+        <strong>Section Links: </strong>
+        {# Output tablular data. Note that it's up to you to output the thead manually. This just output the data. #}
+        <table>
+          <tbody>
+            {% for key, row in item.section_links %}
+              <tr>
+                {% for key, cell in row %}
+                  <td>
+                    {{ cell }}
+                  </td>
+                {% endfor %}
+              </tr>
+            {% endfor%}
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <strong>Sections: </strong>
+        {# Loop of your Repeatable Form items. Remember, you can sort the order in your CMS if you need. #}
+        <ul>
+        {% for row in item.sections %}
+            <li>
+              <strong>Section Title: </strong>
+              {{ row.section_title }}
+            </li>
+            <li>
+              <strong>Layout: </strong>
+              {{ row.layout }}
+            </li>
+            <li>
+              <strong>Section A Name: </strong>
+              {{ row.section_a_name }}
+            </li>
+            <li>
+              <strong>Section Overview: </strong>
+              {{ row.section_overview|safe }}
+            </li>
+            <li>
+              <strong>Featured Node: </strong>
+              {# Relationship. Note that use the label you set for the relation, not the content-type name. #}
+                {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
+                <a href="{{ url(row.featured_node) }}">{{ row.featured_node.name }}</a>
+            </li>
+            <li>
+              <strong>Nodes: </strong>
+              {# Relationship. Note that use the label you set for the relation, not the content-type name. #}
+                {% for relation in row.nodes %}
+                  {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
+                  <a href="{{ url(relation) }}">{{ relation.name }}</a>{% if not loop.last %},{% endif %}
+                {% endfor %}
+            </li>
+            <li>
+              <strong>Featured Expert: </strong>
+              {# Relationship. Note that use the label you set for the relation, not the content-type name. #}
+                {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
+                <a href="{{ url(row.featured_expert) }}">{{ row.featured_expert.name }}</a>
+            </li>
+            <li>
+              <strong>Experts: </strong>
+              {# Relationship. Note that use the label you set for the relation, not the content-type name. #}
+                {% for relation in row.experts %}
+                  {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
+                  <a href="{{ url(relation) }}">{{ relation.name }}</a>{% if not loop.last %},{% endif %}
+                {% endfor %}
+            </li>
+            <li>
+              <strong>Section Footer: </strong>
+              {{ row.section_footer|safe }}
+            </li>
+        {% endfor %}
+        </ul>
+      </li>
+      <li>
+        <strong>Resource Items: </strong>
+        {# Loop of your Repeatable Form items. Remember, you can sort the order in your CMS if you need. #}
+        <ul>
+        {% for row in item.resource_items %}
+            <li>
+              <strong>Resource Name: </strong>
+              {{ row.resource_name }}
+            </li>
+            <li>
+              <strong>Link: </strong>
+              {{ row.link }}
+            </li>
+            <li>
+              <strong>Published Date: </strong>
+              {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
+                {{ row.published_date|date('F d Y') }}
+            </li>
+        {% endfor %}
+        </ul>
+      </li>
+      <li>
+        <strong>Lead Form: </strong>
+        {{ item.lead_form|safe }}
+      </li>
+      <li>
+        <strong>job Forum ID: </strong>
+        {{ item.job_forum_id }}
+      </li>
+      <li>
+        <strong>Featured Experts: </strong>
+        {# Relationship. Note that use the label you set for the relation, not the content-type name. #}
+        {% for relation in item.featured_experts %}
+          {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
+          <a href="{{ url(relation) }}">{{ relation.name }}</a>{% if not loop.last %},{% endif %}
+        {% endfor %}
+      </li>
+      <li>
+        <strong>Preview URL: </strong>
+        {{ item.preview_url }}
+      </li>
+      <li>
+        <strong>Slug: </strong>
+        {{ item.slug }}
+      </li>
+      <li>
+        <strong>Strata (job): </strong>
+        {# Relationship. Note that use the label you set for the relation, not the content-type name. #}
+        {% for relation in item.strata_job %}
+          {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
+          <a href="{{ url(relation) }}">{{ relation.name }}</a>{% if not loop.last %},{% endif %}
+        {% endfor %}
+      </li>
+      <li>
+        <strong>Strata (Featured job): </strong>
+        {# Relationship. Note that use the label you set for the relation, not the content-type name. #}
+        {% for relation in item.strata_featured_job %}
+          {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
+          <a href="{{ url(relation) }}">{{ relation.name }}</a>{% if not loop.last %},{% endif %}
+        {% endfor %}
+      </li>
+  </ul>
+{% endblock %}

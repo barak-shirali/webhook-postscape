@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+   <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+   <sitemap>
+      <loc>{{ getSetting('site_url') }}/sitemap.xml</loc>
+   </sitemap>
+   <sitemap>
+      <loc>{{ getSetting('site_url') }}/site.xml</loc>
+   </sitemap>
+   <sitemap>
+      <loc>{{ getSetting('site_url') }}/nodes.xml</loc>
+   </sitemap>
+   <sitemap>
+      <loc>{{ getSetting('site_url') }}/news.xml</loc>
+   </sitemap>
+   <sitemap>
+      <loc>{{ getSetting('site_url') }}/interview-commentary.xml</loc>
+   </sitemap>
+   <sitemap>
+      <loc>{{ getSetting('site_url') }}/features.xml</loc>
+   </sitemap>
+   <sitemap>
+      <loc>{{ getSetting('site_url') }}/channels.xml</loc>
+   </sitemap>
+   <sitemap>
+      <loc>{{ getSetting('site_url') }}/awards.xml</loc>
+   </sitemap>
+   <sitemap>
+      <loc>{{ getSetting('site_url') }}/guide/sitemap.xml</loc>
+   </sitemap>
+   </sitemapindex>

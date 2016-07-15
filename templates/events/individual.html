@@ -1,0 +1,105 @@
+{# ------------------------------------------------------- #}
+{# INDIVIDUAL VIEW FOR EACH event #}
+{# This page can use any data from http:localhost:2000/cms/#/form/event/ #}
+{# Webhook uses the SWIG.js (like Djagno/Twig) templating system. Their documentation is here: #}
+{# http://paularmstrong.github.io/swig/docs/tags/ #}
+{# Learn about calling data into Webhook pages here: #}
+{# http://www.webhook.com/docs/template-rules-and-filters/ #}
+{# ------------------------------------------------------- #}
+{# Confused what extends and blocks do? Watch a primer: #}
+{# http://www.webhook.com/docs/template-inheritance-blocks/ #}
+{% extends "templates/partials/base.html" %}
+{# This sets our page <title>. It will append this event's name to the site title defined in base.html #}
+{% block title %}{% parent %} - {{ item.name }}{% endblock %}
+{% block meta %}
+  <meta name="robots" content="noindex">
+{% endblock %}
+{% block content %}
+  <p><a href="{{ url('event') }}">View a list of all event</a></p>
+  <h1>{{ item.name }}</h1>
+  <ul>
+      <li>
+        <strong>Name: </strong>
+        {{ item.name }}
+      </li>
+      <li>
+        <strong>Create Date: </strong>
+        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
+        {{ item.create_date|date('F d Y') }}
+      </li>
+      <li>
+        <strong>Last Updated: </strong>
+        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
+        {{ item.last_updated|date('F d Y') }}
+      </li>
+      <li>
+        <strong>Publish Date: </strong>
+        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
+        {{ item.publish_date|date('F d Y') }}
+      </li>
+      <li>
+        <strong>Event Description: </strong>
+        {{ item.event_description|safe }}
+      </li>
+      <li>
+        <strong>Start Date: </strong>
+        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
+        {{ item.start_date|date('F d Y') }}
+      </li>
+      <li>
+        <strong>End Date: </strong>
+        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
+        {{ item.end_date|date('F d Y') }}
+      </li>
+      <li>
+        <strong>Event Email: </strong>
+        {{ item.event_email }}
+      </li>
+      <li>
+        <strong>Website: </strong>
+        {{ item.website }}
+      </li>
+      <li>
+        <strong>Twitter URL: </strong>
+        {{ item.twitter_url }}
+      </li>
+      <li>
+        <strong>Event Hashtag: </strong>
+        {{ item.event_hashtag }}
+      </li>
+      <li>
+        <strong>Price: </strong>
+        {{ item.price }}
+      </li>
+      <li>
+        <strong>Registration: </strong>
+        {{ item.registration }}
+      </li>
+      <li>
+        <strong>Image: </strong>
+        {# You can pull out a lot more information from the image property. Info here: #}
+        {# http://www.webhook.com/docs/widget-template-reference/#image #}
+        <img src="{{ item.image|imageSize(200, 200) }}" />
+      </li>
+      <li>
+        <strong>Location: </strong>
+        {% if item.location %}
+        <ul>
+          <li>Latitude: {{ item.location.latitude }}</li>
+          <li>Longitude: {{ item.location.longitude }}</li>
+          <li>
+          <img src="https://maps.googleapis.com/maps/api/staticmap?center={{ item.location.latitude }},{{ item.location.longitude }}&zoom=8&size=400x400&markers=color:red%7C{{ item.location.latitude }},{{ item.location.longitude }}" />
+          </li>
+        </ul>
+        {% endif %}
+      </li>
+      <li>
+        <strong>Submitter Name: </strong>
+        {{ item.submitter_name.first }} {{ item.submitter_name.last }}
+      </li>
+      <li>
+        <strong>Submitter Email: </strong>
+        {{ item.submitter_email }}
+      </li>
+  </ul>
+{% endblock %}

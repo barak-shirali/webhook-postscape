@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+{# First we call the pulse content from the CMS #}
+{% set data = merge(cms.pulse, cms.page) %}
+
+{# Here we limit the RSS to output 10 entries #}
+{% set data = paginate(data, 10) %}
+
+<rss version="2.0">
+  <channel>
+    <title>{{ getSetting('site_name') }}</title>
+    <link>{{ getSetting('site_url') }}</link>
+    <description>The blog for Postscapes.com</description>
+      {% for object in data|sort('publish_date', true) %}
+      <item>
+        <title>{{ object.name }}</title>
+        <link>{{ getSetting('site_url') }}{{ url(object) }}</link>
+        <description>
+          {{ object.short_version }}
+
+          {{ object.body }}
+        </description>
+        <pubDate>{{ object.publish_date }}</pubDate>
+      </item>
+    {% endfor %}
+  </channel>
+</rss>

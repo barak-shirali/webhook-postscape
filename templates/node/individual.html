@@ -1,0 +1,271 @@
+{# ------------------------------------------------------- #}
+{# INDIVIDUAL VIEW FOR EACH node #}
+{# This page can use any data from http:localhost:2000/cms/#/form/node/ #}
+{# Webhook uses the SWIG.js (like Djagno/Twig) templating system. Their documentation is here: #}
+{# http://paularmstrong.github.io/swig/docs/tags/ #}
+{# Learn about calling data into Webhook pages here: #}
+{# http://www.webhook.com/docs/template-rules-and-filters/ #}
+{# ------------------------------------------------------- #}
+{# Confused what extends and blocks do? Watch a primer: #}
+{# http://www.webhook.com/docs/template-inheritance-blocks/ #}
+{% extends "templates/partials/base.html" %}
+{# This sets our page <title>. It will append this node's name to the site title defined in base.html #}
+{% block title %}{{ item.name }} | Postscapes{% endblock %}
+{% block meta %}
+  {% if item.post == '' %}
+    <meta name="robots" content="noindex,nofollow">
+  {% endif %}
+    <meta name="description" content="A closer look at {{item.name}} -- {{item.main_description|truncate(100)}}">
+{% endblock %}
+{% block content %}
+{% if item.cover_image %}
+<div class="row padding30 node-single-header" style="background:url('http://res.cloudinary.com/postscapes/image/fetch/q_56/e_blur:700/{{ getSetting('site_url') }}{{ item.cover_image.url }}')">
+
+</div>
+{% endif %}
+<div class="row padding30 node-single-content-head">
+  <div class="col-xs-12 col-sm-3 col-sm-push-9 right">
+    <div class="col-xs-12 padding0">
+      {% if item.cover_image %}
+      <img class="img-responsive img-full" src="{{ item.cover_image.url }}" />
+      {% endif %}
+      {% if item.screengrab_image %}
+      <img class="img-responsive img-full" src="{{ item.screengrab_image.url }}" />
+      {% endif %}
+      {% for item in item.gallery %}
+        <img alt="{{ item.caption }}" class="img-responsive img-full" src="{{item.url}}" />
+      {% endfor %}
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-9 col-sm-pull-3">
+  {% if item.logo.url %}
+    <div class="col-xs-12 padding0" style="border-top: 15px solid #005AFF;">
+      <div class="col-xs-12 col-sm-3">
+        {% if item.landing_page_field %}
+          <a href="{{ item.landing_page_field }}" target="_blank">
+            <img class="img-responsive img-itemlogo" src="{{ item.logo.url }}" />
+          </a>
+        {% else %}
+          <a href="{{ item.website }}" target="_blank">
+            <img class="img-responsive img-itemlogo" src="{{ item.logo.url }}" />
+          </a>
+        {% endif %}
+        {% if item.badge %}
+          <a href="/internet-of-things-awards"><img class="img-responsive" src="http://res.cloudinary.com/postscapes/image/fetch/q_60/{{ getSetting('site_url') }}/static/images/award-button-small.png" /></a>
+        {% endif %}
+      </div>
+      <div class="col-xs-12 col-sm-5">
+        {% if item.company_name %}<h2>{{ item.company_name }}</h2>{% endif %}
+        {% if item.address.city && item.address.country %}<span style="font-style:italic;">{% if item.address.city %}{{ item.address.city }}{% endif %}, {% if item.address.country %}{{ item.address.country }}{% endif %}</span>{% endif %}
+        <p>
+          {{ item.main_description|safe }}
+        </p>
+      </div>
+      <div class="col-xs-12 col-sm-4">
+        {% if item.linkedin_url %}<a href="http://linkedin.com/{{ item.linkedin_url }}" target="_blank"><i class="fa fa-linkedin"></i></a>{% endif %}
+        {% if item.facebook_url %}<a href="http://facebook.com/{{ item.facebook_url|replace('http://ww.facebook.com/', '', 'g') }}" target="_blank"><i class="fa fa-facebook"></i></a>{% endif %}
+        {% if item.twitter_handle %}<a href="http://twitter.com/{{ item.twitter_handle }}" target="_blank"><i class="fa fa-twitter"></i></a>{% endif %}
+        {% if item.google_plus_url %}<a href="{{ item.google_plus_url }}" target="_blank"><i class="fa fa-google-plus"></i></a>{% endif %}
+        {% if item.github_url %}<a href="{{ item.github_url }}" target="_blank"><i class="fa fa-github-square"></i></a>{% endif %}
+        {% if item.angellist_handle %}<a href="https://angel.co/{{ item.angellist_handle }}" target="_blank"><i class="fa fa-angellist"></i></a>{% endif %}
+        {% if item.rss_url %}<a href="{{ item.rss_url }}" target="_blank"><i class="fa fa-rss"></i></a>{% endif %}
+        {% if item.founded_date %}<p><b>Founded: </b>{{ item.founded_date|date('d/m/y')  }}</p>{% endif %}
+        {% if item.ticker %}<p><b>Ticker: </b>{{item.ticker}}</p>{% endif %}
+        {% if item.employees %}<p><b>Employees: </b>{{item.employees}}</p>{% endif %}
+        {% if item.phone_number %}<p><b>Phone: </b>{{ item.phone_number }}</p>{% endif %}
+        {% if item.status %}<p><b>Status: </b>{% for option in item.status %}
+          {% if option.value %}
+            {{ option.label }}
+          {% endif %}
+        {% endfor %}</p>{% endif %}
+
+        {% if item.funding_amount %}<p><b>Funding Amount:</b>{{ item.funding_amount }}</p>{% endif %}
+        {% if item.email %}<div class="col-xs-12 padding0"><a class="btn btn-default" href="mailto:{{ item.email }}"><i class="fa fa-inbox"></i> Message</a></div>{% endif %}
+        {% if item.website %}<div class="col-xs-12 padding0"><a class="btn btn-default" href="{{ item.website }}" target="_blank"><i class="fa fa-home"></i> Homepage</a></div>{% endif %}
+      </div>
+
+    </div>
+    {% endif %}
+    {% if item.name || item.tagline %}
+    <div class="col-xs-12 node-single-titlemain">
+      <h1>{{ item.name }}</h1>
+      <h2>{{ item.tagline }}</h2>
+    </div>
+    {% endif %}
+    {% if item.post != '' %}
+    <div class="col-xs-12 node-single-blue">
+      <div class="hidden-xs col-sm-4">
+
+      </div>
+
+      <div class="col-xs-12 col-sm-12">
+        {{item.post|safe}}
+        {% if item.author %}
+        <div class="col-xs-12 author">
+          {% for author in item.author %}
+            <div class="col-xs-2">
+              <div class="col-xs-3">By</div>
+              <div class="col-xs-9">
+                <a href="{{author.linkedin_url}}"><img class="img-responsive img-circle" src="{{author.bio_image.url}}" /></a>
+              </div>
+            </div>
+            <div class="col-xs-10">
+              <div class="col-xs-3">
+                {{author.name}}
+              </div>
+              <div class="col-xs-9">
+                {{ author.one_liner|safe|truncate(200) }}
+              </div>
+              <div class="col-xs-12">
+                {% if author.website %}<a href="{{author.website}}"><i class="fa fa-home" aria-hidden="true"></i></a>{% endif %}
+                {% if author.linkedin_url %}<a href="{{author.linkedin_url}}"><i class="fa fa-linkedin" aria-hidden="true"></i></a>{% endif %}
+                {% if author.twitter_url %}<a href="{{author.twitter_url}}"><i class="fa fa-facebook" aria-hidden="true"></i></a>{% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+    {% if item.highlights %}
+    <div class="col-xs-12 node-single-blue">
+      <div class="col-xs-12 col-sm-4">
+        <h2>Highlights</h2>
+      </div>
+      <div class="col-xs-12 col-sm-8">
+        <ul>
+        {% for item in item.highlights %}
+          <li>
+            {% if item.bullet_link %}<a href="{{item.bullet_link}}">{% endif %}{{item.highlight}}{% if item.bullet_link %}</a>{% endif %}
+          </li>
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+    {% if item.pricing__reviews != '' %}
+    <div class="col-xs-12 node-single-blue">
+      <div class="col-xs-12 col-sm-4">
+        <h2>Pricing</h2>
+      </div>
+      <div class="col-xs-12 col-sm-8">
+        <ul>
+        {% for item in item.pricing__reviews %}
+          <li itemscope itemtype="http://schema.org/Review">
+            <span itemprop="name">{{item.retailerpublication}}</span> -
+            {% if item.amount %}<a href="{{item.website}}">${{item.amount}} {% endif %}
+            {% if item.pricing_files %}<a href="{{item.pricing_files.url}}">{{item.pricing_files.name}}</a>{% endif %}</a>
+            <span itemprop="ratingValue">{{item.review_info}}</span>
+          </li>
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+    {% if item.user__technical_information %}
+    <div class="col-xs-12 node-single-blue">
+      <div class="col-xs-12 col-sm-4">
+        <h2>User Info</h2>
+      </div>
+      <div class="col-xs-12 col-sm-8">
+        <ul>
+          {% for item in item.user__technical_information %}
+            <li>
+              {% if item.link %}<a href="{{item.link}}">{{item.type}}</a>{% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+    {% if item.video %}
+    <div class="col-xs-12 node-single-blue">
+      <div class="col-xs-12 col-sm-4">
+        <h2>Video</h2>
+      </div>
+      <div class="col-xs-12 col-sm-8">
+        <div class="col-xs-12 responsive-object">
+          {{item.video.html|safe}}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% if item.google_app_url || item.apple_app_url %}
+    <div class="col-xs-12 node-single-blue">
+      <div class="col-xs-12 col-sm-4">
+        <h2>Apps</h2>
+        <img class="img-responsive img-center" src="{{item.apple_app_image}}" />
+      </div>
+      <div class="col-xs-12 col-sm-8">
+        {% if item.google_app_url %}
+        <div class="col-xs-12 col-sm-6">
+          <a href="{{ item.google_app_url }}"><img class="img-responsive" src="{{ getSetting('site_url') }}/static/images/google-play.png" /></a>
+          {% if item.google_app_rating %}<span class="stars">{{ nodeitem.google_app_rating }}</span>{% endif %}
+        </div>
+        {% endif %}
+        {% if item.apple_app_url %}
+        <div class="col-xs-12 col-sm-6">
+          <a href="{{ item.apple_app_url }}"><img class="img-responsive" src="{{ getSetting('site_url') }}/static/images/app-store.png" /></a>
+          {% if item.apple_app_rating %}<span class="stars">{{ nodeitem.apple_app_rating }}</span>{% endif %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+    {% if item.linkedin %}
+    <div class="col-xs-12 node-single-blue">
+      <div class="col-xs-12 col-sm-4">
+        <h2>Linkedin</h2>
+      </div>
+      <div class="col-xs-12 col-sm-8">
+
+      </div>
+    </div>
+    {% endif %}
+    {% if item.twitter_handle != '' %}
+    <div class="col-xs-12 node-single-blue">
+      <div class="col-xs-12 col-sm-4">
+        <h2>Twitter</h2>
+      </div>
+      <div class="col-xs-12 col-sm-8">
+        <a class="twitter-timeline" data-height="500" href="https://twitter.com/{{item.twitter_handle}}">Tweets by {{item.twitter_handle}}</a>
+        <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+      </div>
+    </div>
+    {% endif %}
+    {% if item.logo.url %}
+    <div class="col-xs-12 node-getintouch">
+      <div class="col-xs-4">
+        <a href="{{ item.website }}" target="_blank">
+          <img class="img-responsive" src="{{ item.logo.url }}" />
+        </a>
+      </div>
+      <div class="col-xs-8">
+        <h2>Like what you see?</h2>
+        {% if item.email %}<a class="btn btn-default"><i class="fa fa-inbox" href="mailto:{{item.email}}"></i> Message</a>{% endif %}
+        {% if item.website %}<a class="btn btn-default" href="{{ item.website }}" target="_blank"><i class="fa fa-home"></i> Visit</a>{% endif %}
+        {% if item.phone_number %}<p>{{ item.phone_number }}</p>{% endif %}
+      </div>
+    </div>
+    {% endif %}
+    {% if item.channel %}
+    <div class="col-xs-12 featuredin">
+      <h3>Featured in Channel:</h3>
+      {% for item in item.channel %}
+      <div class="col-xs-12 padding0">
+        <div class="col-xs-8 padding0">
+          <a href="{{url(item)}}"><img class="img-responsive" src="{{ item.cover_image.url }}" /></a>
+        </div>
+        <div class="col-xs-4">
+            <h2>{{ item.name }}</h2>
+            <p>A spotlight on the products and companies</p>
+            <a class="btn btn-blue btn-view" href="{{url(item)}}"><i class="fa fa-plus-circle"></i> View</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    </div>
+</div>
+{% endblock %}

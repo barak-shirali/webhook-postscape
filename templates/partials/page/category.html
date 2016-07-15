@@ -1,0 +1,18 @@
+<div class="col-xs-12 col-sm-4 section-category-item">
+  <div class="col-xs-12 padding0">
+    {% if item.button_link %}<a href="{{item.button_link}}">{% endif %}<img class="img-responsive img-full" src="{{item.image.url}}" />{% if item.button_link %}</a>{% endif %}
+    <div class="bottom">
+        {% if item.item_title %}<h3>{{item.item_title}}</h3>{% endif %}
+        {% if item.button_link %}<a href="{{item.button_link}}">{% endif %}{% if item.button_text %}{{item.button_text}}{% endif %}{% if item.button_link %}</a>{% endif %}
+      {% if item.description %}
+        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+      {% endif %}
+    </div>
+    {% if item.description %}
+    <div class="overlay">
+      {{item.description|safe}}
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </div>
+    {% endif %}
+  </div>
+</div>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <script>
+            function loopOnArrayWithDelay(theArray, delayAmount, i, theFunction, onComplete) {
+                if (i < theArray.length && typeof delayAmount == 'number') {
+
+                    theFunction(theArray[i], i);
+
+                    setTimeout(function() {
+
+                        loopOnArrayWithDelay(theArray, delayAmount, (i + 1), theFunction, onComplete)
+                    }, delayAmount);
+                } else {
+
+                    onComplete(i);
+                }
+            }
+            var posts;
+            var i,j;
+            var nodePostData = {
+                "screengrab_image": ""
+            };
+            function getPostsFromWebHook() {
+                var protomatch = /^(https?|http):\/\//;
+                loopOnArrayWithDelay(posts, 1500, 0, function(e, i) {
+                    if (posts[i].website) {
+                        var address = posts[i].website;
+                        var arr = address.split("/");
+                        address = arr[2].replace(protomatch, '');
+                        if (address.substr(-1) === '/') {
+                            address = address.substr(0, address.length - 1);
+                        }
+                        if (!posts[i].screengrab_image) {
+                            j++;
+                            getDomainData(address, posts[i]._id, j);
+                        }
+                    }
+                }, function(i) {
+                    console.log('Done')
+                });
+                // for (i = 0; i < posts.length; ++i) {    if (posts[i].website) {        var address = posts[i].website.replace(protomatch, '');        if (address.substr(-1) === '/') {            address = address.substr(0, address.length - 1);        }
+                // getDomainData(address, posts[i]._id);    } }
+            }
+            function getDomainData(domain, nodeid, j) {
+                $.ajax({
+                    type: "GET",
+                    url: "https://jsonwhois.p.mashape.com/api/v1/screenshot?domain=" + domain,
+                    dataType: 'json',
+                    async: true,
+                    headers: {
+                        "X-Mashape-Key": "TRUVsdkNirmshtiQ6JiI15EW5chtp1DK5AMjsnPRRtt0KWpiOT",
+                        "Authorization": "Token token=36909fefcde679fd65d9e230b8f02a75",
+                        "Accept": "application/json"
+                    },
+                    success: function(data) {
+                        $('.gotscreens span').text(j);
+                        console.log("http://" + data["url"]);
+                        nodePostData = {
+                            "screengrab_image": "http://" + data["url"]
+                        };
+                        sendToWebhook(nodeid, j);
+                    }
+                });
+            }
+            function sendToWebhook(id, j) {
+                $.ajax({
+                    type: "POST",
+                    url: "https://server.webhook.com/update-item/?site=postscapes2&apiKey=fc75caf3-ff3f-4b42-9d36-93843690bf6e&type=node&id=" + id,
+                    dataType: 'json',
+                    async: true,
+                    data: nodePostData,
+                    success: function() {
+                        console.log('radi');
+                        $('.posted span').text(j);
+                    }
+                });
+            }
+            $.ajax({
+                type: "GET",
+                url: "http://postscapes2.webhook.org/node-json",
+                dataType: 'json',
+                async: true,
+                success: function(data) {
+                    posts = data;
+                    getPostsFromWebHook();
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <div class="results">
+            <p class="gotscreens">Got screenshots:
+                <span>0</span>
+            </p>
+            <p class="posted">Posted to webhook:
+                <span>0</span>
+            </p>
+        </div>
+    </body>
+</html>

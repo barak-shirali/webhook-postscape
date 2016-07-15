@@ -1,0 +1,55 @@
+{# ------------------------------------------------------- #}
+
+{# SEARCH RESULTS #}
+
+{# Webhook provides built in JS powerd search based upon your build directory #}
+{# The input form is in templates/partials/base.html #}
+{# This page outputs the actual results. #}
+
+{# DOCUMENTATION #}
+{# http://www.webhook.com/docs/search/ #}
+
+{# BASED ON TIPUE SEARCH #}
+{# This search is based on Tipue Search, which is MIT OS software. #}
+{# https://github.com/Tipue/Tipue-Search #}
+
+{# ------------------------------------------------------- #}
+{% extends "templates/partials/base.html" %}
+
+{% block body_attributes %}data-search-index="false" class="search"{% endblock %}
+
+{% block head_extra %}
+
+  {# STYLES FOR THE SEARCH RESULTS. #}
+  {# Feel free to replace and put in a css file. #}
+
+  {% parent %}
+
+
+{% endblock %}
+
+{% block content %}
+
+{# SEARCH RESULTS WILL GO IN HERE. #}
+  <div class="row padding30">
+    <div class="row">
+      <script>
+        (function() {
+          var cx = '005626247795485649407:7n6cghiwaqk'; // Insert your own Custom Search Engine ID here
+          var gcse = document.createElement('script'); gcse.type = 'text/javascript'; gcse.async = true;
+          gcse.src = (document.location.protocol == 'https' ? 'https:' : 'http:') +
+              '//www.google.com/cse/cse.js?cx=' + cx;
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
+        })();
+      </script>
+      <div class="search">
+        <gcse:searchbox></gcse:searchbox>
+      </div>
+      <div class="search-results">
+        <gcse:searchresults>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}

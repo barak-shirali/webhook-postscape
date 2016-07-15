@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <script>
+            function loopOnArrayWithDelay(theArray, delayAmount, i, theFunction, onComplete) {
+                if (i < theArray.length && typeof delayAmount == 'number') {
+
+                    theFunction(theArray[i], i);
+
+                    setTimeout(function() {
+
+                        loopOnArrayWithDelay(theArray, delayAmount, (i + 1), theFunction, onComplete)
+                    }, delayAmount);
+                } else {
+
+                    onComplete(i);
+                }
+            }
+            var posts;
+            var i;
+            var nodePostData = {};
+
+            function getPostsFromWebHook() {
+                var protomatch = /^(https?|http):\/\//;
+                loopOnArrayWithDelay(posts, 2000, 0, function(e, i) {
+                    if (posts[i].website) {
+                        var address = posts[i].website;
+                        var arr = address.split("/");
+                        address = arr[2].replace(protomatch, '');
+                        if (address.substr(-1) === '/') {
+                            address = address.substr(0, address.length - 1);
+                        }
+                        if (posts[i].logo == '') {
+                            getDomainData(address, posts[i]._id);
+                        }
+                    }
+                }, function(i) {
+                    console.log('Done')
+                });
+                // for (i = 0; i < posts.length; ++i) { 	if (posts[i].website) { 		var address = posts[i].website; 		var arr = address.split("/"); 		address = arr[2].replace(protomatch, ''); 		if (address.substr(-1) === '/') { 			address = address.substr(0,
+                // address.length - 1); 		} 		getDomainData(address, posts[i]._id); 	} }
+            }
+
+            function getDomainData(domain, nodeid) {
+                $.ajax({
+                    type: "GET",
+                    url: "https://company.clearbit.com/v1/companies/domain/" + domain,
+                    dataType: 'json',
+                    async: true,
+                    headers: {
+                        "Authorization": "Basic " + btoa("cffdf927dd3218bbc3f754fe77a879cc:")
+                    },
+                    success: function(data) {
+                        if (data.description) {
+                            nodePostData["main_description"] = data.description;
+                        }
+
+                        //if (data.metaDescription) {    nodePostData["tagline"] = data.metaDescription; }
+                        if (data.logo) {
+                            nodePostData["logo"] = data.logo;
+                        } else {
+                            nodePostData["logo"] = null;
+                        }
+                        if (data.phone) {
+                            nodePostData["phone_number"] = data.phone;
+                        } else {
+                            nodePostData["phone_number"] = null;
+                        }
+                        if (data.geo) {
+                            nodePostData["address"] = {};
+                            if (data.geo.streetNumber) {
+                                nodePostData["address"]["street1"] = data.geo.streetNumber;
+                            } else {
+                                nodePostData["address"]["street1"] = null;
+                            }
+                            if (data.geo.streetName) {
+                                nodePostData["address"]["street2"] = data.geo.streetName;
+                            } else {
+                                nodePostData["address"]["street2"] = null;
+                            }
+                            if (data.geo.city) {
+                                nodePostData["address"]["city"] = data.geo.city;
+                            } else {
+                                nodePostData["address"]["city"] = null;
+                            }
+                            if (data.geo.state) {
+                                nodePostData["address"]["state"] = data.geo.state;
+                            } else {
+                                nodePostData["address"]["state"] = null;
+                            }
+                            if (data.geo.country) {
+                                nodePostData["address"]["country"] = data.geo.country;
+                            } else {
+                                nodePostData["address"]["country"] = null;
+                            }
+                            if (data.geo.postalCode) {
+                                nodePostData["address"]["zip"] = data.geo.postalCode;
+                            } else {
+                                nodePostData["address"]["zip"] = null;
+                            }
+                            if (data.geo.lat && data.geo.lng) {
+                                nodePostData["geolocation"] = {};
+                                if (data.geo.lat) {
+                                    nodePostData["geolocation"]["latitude"] = data.geo.lat;
+                                } else {
+                                    nodePostData["geolocation"]["latitude"] = null;
+                                }
+                                if (data.geo.lng) {
+                                    nodePostData["geolocation"]["longitude"] = data.geo.lng;
+                                } else {
+                                    nodePostData["geolocation"]["longitude"] = null;
+                                }
+                            }
+                        }
+                        if (data.metrics) {
+                            if (data.metrics.raised) {
+                                nodePostData["funding_amount"] = data.metrics.raised;
+                            } else {
+                                nodePostData["funding_amount"] = null;
+                            }
+                            if (data.metrics.employees) {
+                                nodePostData["employees"] = data.metrics.employees;
+                            } else {
+                                nodePostData["employees"] = null;
+                            }
+                        }
+                        if (data.facebook) {
+                            if (data.facebook.handle) {
+                                nodePostData["facebook_url"] = data.facebook.handle;
+                            } else {
+                                nodePostData["facebook_url"] = null;
+                            }
+                        }
+                        if (data.linkedin) {
+                            if (data.linkedin.handle) {
+                                nodePostData["linkedin_url"] = data.linkedin.handle;
+                            } else {
+                                nodePostData["linkedin_url"] = null;
+                            }
+                        }
+                        if (data.twitter) {
+                            if (data.twitter.handle) {
+                                nodePostData["twitter_handle"] = data.twitter.handle;
+                            } else {
+                                nodePostData["twitter_handle"] = null;
+                            }
+                        }
+                        if (data.angellist) {
+                            if (data.angellist.handle) {
+                                nodePostData["angellist_handle"] = data.angellist.handle;
+                            } else {
+                                nodePostData["angellist_handle"] = null;
+                            }
+                            if (data.angellist.id) {
+                                nodePostData["angellist_id"] = data.angellist.id;
+                            } else {
+                                nodePostData["angellist_id"] = null;
+                            }
+                            if (data.angellist.blogUrl) {
+                                nodePostData["rss_url"] = data.angellist.blogUrl;
+                            } else {
+                                nodePostData["rss_url"] = null;
+                            }
+                        }
+                        console.log(nodePostData);
+                        sendToWebhook(nodeid);
+
+                    }
+                });
+            }
+
+            function sendToWebhook(id) {
+                $.ajax({
+                    type: "POST",
+                    url: "https://server.webhook.com/update-item/?site=postscapes2&apiKey=fc75caf3-ff3f-4b42-9d36-93843690bf6e&type=node&id=" + id,
+                    dataType: 'json',
+                    async: true,
+                    data: nodePostData,
+                    success: function() {
+                        console.log('radi');
+                        $('.results span').text(i);
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            }
+            $.ajax({
+                type: "GET",
+                url: "http://postscapes2.webhook.org/node-json/",
+                dataType: 'json',
+                async: true,
+                success: function(data) {
+                    posts = data;
+                    console.log(posts);
+                    getPostsFromWebHook();
+                }
+            });
+        </script>
+    </head>
+
+    <body>
+        <div class="results">
+            <p>Processed Items:
+                <span>0</span>
+            </p>
+        </div>
+    </body>
+
+</html>

@@ -1,0 +1,172 @@
+{# ------------------------------------------------------- #}
+
+{# YOUR BASE TEMPLATE. EVERYTHING GETS LOADED INTO THIS PAGE. #}
+
+{# Webhook uses the SWIG.js (like Djagno/Twig) templating system. Their documentation is here: #}
+{# http://paularmstrong.github.io/swig/docs/tags/ #}
+
+{# Learn about calling data into Webhook pages here: #}
+{# http://www.webhook.com/docs/template-rules-and-filters/ #}
+
+{# ------------------------------------------------------- #}
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
+  {# Grab the title and description from the CMS general settings. #}
+  {% set site_title = getSetting('site_name')%}
+  {% set site_description = getSetting('site_description')%}
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>{% block title %}{{ site_title|default('Webhook site') }}{% endblock %}</title>
+
+    <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" href="/static/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/static/images/touch-icon.png">
+    {% block meta %}<meta name="description" content="{% block description %}{{ site_description }}{% endblock %}">{% endblock %}
+
+    {# Put your CSS in here and we'll minify it into one file. No CDN scripts. More info: #}
+    {# http://www.webhook.com/docs/minify-your-js-and-css/ #}
+
+    <!-- build:css /static/css/minified.css -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/flexslider.css"/>
+    <link rel="stylesheet" href="/static/css/main.css"/>
+    <link rel="stylesheet" href="/static/css/wysiwyg_figures.css"/>
+    <!-- endbuild -->
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js"></script>
+
+    {# Useful block for loading outside scripts in other pages. #}
+    {% block head_extra %}{% endblock %}
+  </head>
+  <body {% block body_attributes %}{% endblock %}>
+    {% block body %}
+      <!--[if lt IE 7]>
+        <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+      <![endif]-->
+      {% block homepagebanner %}
+      {% endblock %}
+      {% block header %}
+        {% include "templates/partials/header.html" %}
+      {% endblock %}
+      <main class="row">
+          <a class="menuopen"><i class="fa fa-arrow-right"></i></a>
+      		<div class="left-sidebar">
+      		<div class="content">
+                <ul class="sidebar-elements">
+                  <li class="parent"><a href="#"><i class="fa fa-flash"></i><span>Pulse</span></a>
+      	            <ul class="sub-menu">
+      	            	<li class="title">Pulse</li>
+      	            	<li class="nav-items">
+      	            		<div class="am-scroller nano">
+      		            		<div class="content nano-content">
+      		            			<ul>
+                              {% set pulse = cms.menu.pulse %}
+                              {% for object in pulse %}
+      		            				<li><a href="{{object.link}}">{{object.title}}</a></li>
+                              {% endfor %}
+      		            			</ul>
+      		            		</div>
+
+      	            		</div>
+      	            	</li>
+      	            </ul>
+                  </li>
+                  <li class="parent"><a href="#"><i class="fa fa-circle-thin"></i><span>Nodes</span></a>
+                    <ul class="sub-menu">
+      	            	<li class="title">Nodes</li>
+      	            	<li class="nav-items">
+      	            		<div class="am-scroller nano">
+      		            		<div class="content nano-content">
+      		            			<ul>
+                              {% set node = cms.menu.node %}
+                              {% for object in node %}
+      		            				<li><a href="{{object.link}}">{{object.name}}</a></li>
+                              {% endfor %}
+      		            			</ul>
+      		            		</div>
+      	            		</div>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="parent"><a href="#"><i class="fa fa-bars"></i><span>Guides</span></a>
+                    <ul class="sub-menu">
+                      <li class="title">Guides</li>
+                      <li class="nav-items">
+                        <div class="am-scroller nano">
+                          <div class="content nano-content">
+                            <ul>
+                              {% set strata = cms.menu.guides %}
+                              {% for object in strata %}
+                              <li><a href="{{object.link}}">{{object.name}}</a></li>
+                              {% endfor %}
+                            </ul>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="parent"><a href="#"><i class="fa fa-arrows"></i><span>Tools</span></a>
+                    <ul class="sub-menu">
+                      <li class="title">Tools</li>
+                      <li class="nav-items">
+                        <div class="am-scroller nano">
+                          <div class="content nano-content">
+                            <ul>
+                              {% set tools = cms.menu.tools %}
+                              {% for object in tools %}
+                              <li><a href="{{object.link}}">{{object.title}}</a></li>
+                              {% endfor %}
+                            </ul>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+                <!--Sidebar bottom content-->
+              </div>
+      		</div>
+      		<div class="main-content">
+
+      {# By default, your inner pages will load into this block. #}
+      {% block content %}{% endblock %}
+
+      {% block footer %}
+        {% include "templates/partials/footer.html" %}
+      {% endblock %}
+      </div>
+      </main>
+
+
+      {# Put your JS in here and we'll minify it into one file. No CDN scripts. More info: #}
+      {# http://www.webhook.com/docs/minify-your-js-and-css/ #}
+
+      <!-- build:js /static/javascript/minified.js -->
+        <script src="/static/javascript/jquery.min.js"></script>
+        <script src="/static/javascript/bootstrap.min.js"></script>
+        <script src="/static/javascript/jquery.flexslider-min.js"></script>
+        <script src="/static/javascript/jquery.pagination.min.js"></script>
+        <script src="/static/javascript/main.js"></script>
+      <!-- endbuild -->
+
+
+      <!-- Google Tag Manager -->
+      <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-W62H5C"
+      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-W62H5C');</script>
+      <!-- End Google Tag Manager -->
+      {% block scripts_extra %}{% endblock %}
+  </body>
+</html>

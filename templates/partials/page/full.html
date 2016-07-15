@@ -1,0 +1,68 @@
+{% for nodeitem in item.nodes %}
+<div class="col-xs-12 padding0 node-layout-full {% if item.featured %}featured{% endif %}">
+  <div class="col-xs-12 headnode">
+    {% if item.featured %}<span class="feat">Featured</span>{% endif %}
+    <span class="title">{% if item.item_title %}{{item.item_title}}{% else %}{{nodeitem.name}}{% endif %}</span>
+    {% if nodeitem.linkedin_url %}<a href="http://linkedin.com/company/{{ nodeitem.linkedin_url }}" target="_blank"><i class="fa fa-linkedin"></i></a>{% endif %}
+    {% if nodeitem.twitter_handle %}<a href="http://twitter.com/{{ nodeitem.twitter_handle }}" target="_blank"><i class="fa fa-twitter"></i></a>{% endif %}
+    {% if nodeitem.google_plus_url %}<a href="{{ nodeitem.google_plus_url }}" target="_blank"><i class="fa fa-google-plus"></i></a>{% endif %}
+    {% if nodeitem.facebook_url %}<a href="http://facebook.com/{{ nodeitem.facebook_url }}" target="_blank"><i class="fa fa-facebook"></i></a>{% endif %}
+    {% if nodeitem.angellist_handle %}<a href="https://angel.co/{{ nodeitem.angellist_handle }}" target="_blank"><i class="fa fa-angellist"></i></a>{% endif %}
+    {% if nodeitem.rss_url %}<a href="{{ nodeitem.rss_url }}" target="_blank"><i class="fa fa-rss"></i></a>{% endif %}
+  </div>
+  {% if nodeitem.tagline %}
+  <div class="col-xs-12">
+    <p class="subheading">"{{ nodeitem.tagline }}"</p>
+  </div>
+  {% endif %}
+  <div class="col-xs-12 col-sm-3 bright">
+    {% if nodeitem.cover_image %}<a href="{{nodeitem.website}}"><img class="img-responsive img-full img-channel-bordered {% if item.featured %}featured{% endif %}" src="{{ nodeitem.cover_image.url }}" /></a>{% endif %}
+    {% if nodeitem.logo %}
+    <div class="col-xs-12 nodelogo">
+      <a href="{{nodeitem.website}}"><img class="img-responsive img-circle img-center img-channel-node" src="{{ nodeitem.logo.url }}" /></a>
+    </div>
+    {% endif %}
+  </div>
+  <div class="col-xs-12 col-sm-5 bright">
+    <h3>Highlights</h3>
+    <ul>
+    {% for item in nodeitem.highlights %}
+      <li>
+        {% if item.bullet_link %}<a href="{{item.bullet_link}}">{% endif %}{{item.highlight}}{% if item.bullet_link %}</a>{% endif %}
+      </li>
+    {% endfor %}
+    </ul>
+    {% if nodeitem.email %}<a href="mailto:{{ nodeitem.email }}" class="nodemessage"><i class="fa fa-envelope-o"></i></a>{% endif %}
+    {% if nodeitem.website %}<a {% if item.featured %}rel="nofollow"{% endif %} href="{{ nodeitem.website }}" class="btn btn-default btn-nodehome"><i class="fa fa-home"></i> More</a>{% endif %}
+  </div>
+  <div class="col-xs-12 col-sm-4 bright">
+    {% if nodeitem.pricing__reviews != '' %}
+    <h3>Pricing & reviews</h3>
+    <ul class="channel-pricing-review">
+    {% for item in nodeitem.pricing__reviews %}
+      <li itemscope itemtype="http://schema.org/Review">
+        <a href="{{item.website}}"><span itemprop="name">{{item.retailerpublication}}</span> -
+        {% if item.amount %}${{item.amount}} {% endif %}
+        {% if item.pricing_files %}<a href="{{item.pricing_files.url}}">{{item.pricing_files.name}}</a>{% endif %}</a>
+        <span class="rating-value" itemprop="ratingValue">{{item.review_info}}</span>
+      </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if nodeitem.apple_app_url || nodeitem.google_app_url %}<h3>Apps</h3>{% endif %}
+    {% if nodeitem.apple_app_url %}<p><i class="fa fa-apple"></i><a class="btn btn-default btn-dl" href="{{ nodeitem.apple_app_url }}">Download</a>{% if nodeitem.apple_app_rating %}<span class="stars">{{ nodeitem.apple_app_rating }}</span></p>{% endif %}{% endif %}
+    {% if nodeitem.google_app_url %}<p><i class="fa fa-android"></i><a class="btn btn-default btn-dl" href="{{ nodeitem.google_app_url }}">Download</a>{% if nodeitem.google_app_rating %}<span class="stars">{{ nodeitem.google_app_rating }}</span></p>{% endif %}{% endif %}
+    {% if nodeitem.user__technical_information %}
+    <h3>User & Technical</h3>
+    <ul class="user-technical">
+      {% for item in nodeitem.user__technical_information %}
+        <li>
+          <a href="{{item.link}}">{{item.type}}</a>
+        </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+</div>
+{% endfor %}

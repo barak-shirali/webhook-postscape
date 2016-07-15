@@ -1,0 +1,52 @@
+{% if !item.nodes %}
+  <div class="col-xs-12 col-sm-3 channel_grid">
+    <div class="col-xs-12">
+      {% if item.image %}
+        {% if item.button_link %}<a href="{{item.button_link}}" target="_blank">{% endif %}<img class="img-responsive img-full img-channel-bordered {% if item.featured %}featured{% endif %}" src="{{ item.image.url }}" />{% if item.button_link %}</a>{% endif %}
+      {% endif %}
+      {% if item.item_title %}
+        <a class="title" href="{{item.item_title_link}}">{{item.item_title|truncate(50)}}</a>
+      {% endif %}
+      {% if item.description %}
+        <p class="nodeitemdescr">{{item.description|safe|truncate(150) }}</p>
+      {% endif %}
+      {% if item.button_text %}{% if item.button_text %}<div class="col-xs-12"><a class="btn btn-channel-more{% if item.featured %}btn-featured{% endif %}" href="{{item.button_link}}">{{item.button_text}}</a></div>{% endif %}{% endif %}
+    </div>
+  </div>
+{% endif %}
+{% for nodeitem in item.nodes %}
+  <div class="col-xs-12 col-sm-3 channel_grid">
+    <div class="col-xs-12">
+      {% if item.image %}
+        {% if nodeitem.website %}<a href="{{nodeitem.website}}" target="_blank">{% endif %}<img class="img-responsive img-full img-channel-bordered {% if item.featured %}featured{% endif %}" src="{{ item.image.url }}" />
+          <div class="col-xs-12 nodelogo">
+            <img class="img-responsive img-circle img-center img-channel-node" src="{{ nodeitem.logo.url }}" />
+          </div>
+        {% if nodeitem.website %}</a>{% endif %}
+      {% else %}
+        {% if nodeitem.website %}<a href="{{nodeitem.website}}" target="_blank">{% endif %}<img class="img-responsive img-full img-channel-bordered {% if item.featured %}featured{% endif %}" src="{{ nodeitem.cover_image.url }}" />
+          <div class="col-xs-12 nodelogo">
+            <img class="img-responsive img-circle img-center img-channel-node" src="{{ nodeitem.logo.url }}" />
+          </div>
+        {% if nodeitem.website %}</a>{% endif %}
+      {% endif %}
+      <div class="channel_social">
+        {% if nodeitem.website %}<a href="{{nodeitem.website}}"><i class="fa fa-home"></i></a>{% endif %}
+        {% if nodeitem.linkedin_url %}<a href="http://linkedin.com/company/{{ nodeitem.linkedin_url }}" target="_blank"><i class="fa fa-linkedin"></i></a>{% endif %}
+        {% if nodeitem.twitter_handle %}<a href="http://twitter.com/{{ nodeitem.twitter_handle }}" target="_blank"><i class="fa fa-twitter"></i></a>{% endif %}
+        {% if nodeitem.facebook_url %}<a href="http://facebook.com/{{ nodeitem.facebook_url }}" target="_blank"><i class="fa fa-facebook"></i></a>{% endif %}
+      </div>
+      {% if item.item_title %}
+        <a class="title" href="{{item.item_title_link}}">{{item.item_title|truncate(50)}}</a>
+      {% else %}
+        <a class="title" href="{{nodeitem.website}}">{{nodeitem.name|truncate(50)}}</a>
+      {% endif %}
+      {% if item.description %}
+        <p class="nodeitemdescr">{{item.description|safe|truncate(150) }}</p>
+      {% else %}
+        <p class="nodeitemdescr">{{nodeitem.main_description|safe|truncate(150) }}</p>
+      {% endif %}
+      {% if item.button_text %}<div class="col-xs-12"><a class="btn btn-channel-more{% if item.featured %}btn-featured{% endif %}" href="{{item.button_link}}">{{item.button_text}}</a></div>{% endif %}
+    </div>
+  </div>
+  {% endfor %}

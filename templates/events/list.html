@@ -1,0 +1,189 @@
+{# ------------------------------------------------------- #}
+
+{# Webhook uses the SWIG.js (like Djagno/Twig) templating system. Their documentation is here: #}
+{# http://paularmstrong.github.io/swig/docs/tags/ #}
+
+{# Learn about calling data into Webhook pages here: #}
+{# http://www.webhook.com/docs/template-rules-and-filters/ #}
+
+{# ------------------------------------------------------- #}
+
+{# Confused what extends and blocks do? Watch a primer: #}
+{# http://www.webhook.com/docs/template-inheritance-blocks/ #}
+{% extends "templates/partials/base.html" %}
+
+{# This sets our page <title>. It will append "- Homepage" to the site title defined in base. #}
+{% block title %}2016 IoT Events{% endblock %}
+{% block description %}Search and sort Internet of Things related conferences, Meetups and upcoming webinars...{% endblock %}
+{% block content %}
+  <div class="row headpart">
+    <div class="pull-left">
+      <h2>Pulse - Events</h2>
+    </div>
+    <div class="pull-right">
+      <span>Tracking the Internet of Things</span>
+    </div>
+  </div>
+  <div class="row padding30">
+    <div class="row pulseevents">
+        <div class="col-xs-12 col-sm-3 left">
+          <div class="col-xs-8">
+            <h1>Internet of Things Events</h1>
+          </div>
+
+          <a href="http://about.postscapes.com/event-listings" class="btn btn-default">List your event</a>
+
+        </div>
+        <div class="col-xs-12 col-sm-9 right">
+          <div class="col-xs-12">
+            <h3>Conferences</h3>
+            <div class="row">
+              <ul class="conferences paginate">
+              {% for event in cms.events|sort('start_date', true)|where('event_type','Conference')|where('featured',true)|slice(0, 1) %}
+              <li class="col-xs-12 featured">
+                <script type="application/ld+json">
+                  {
+                    "@context": "http://schema.org",
+                    "@type": "Event",
+                    "name": "{{event.name}}",
+                    "startDate" : "{{event.start_date}}",
+                    "url" : "{{ event.website }}",
+                    "location" : {
+                      "@type" : "Place",
+                      "sameAs" : "",
+                      "name" : "{{ event.website }}",
+                      "address" : "{{ item.address }}"
+                    }
+                  }
+                </script>
+                <div class="col-xs-12 col-sm-4">
+                  <a rel="nofollow" href="{{event.website}}">
+                    {% if event.image.url %}
+                      <img class="img-responsive img-full" src="http://res.cloudinary.com/postscapes/image/fetch/c_scale,co_rgb:1d1d1d,q_61,w_1.0/{{ getSetting('site_url') }}{{ event.image.url }}" />
+                    {% else %}
+                      <img class="img-responsive img-full" src="http://res.cloudinary.com/postscapes/image/fetch/c_scale,co_rgb:1d1d1d,q_61,w_1.0/{{ getSetting('site_url') }}/static/images/360.png" />
+                    {% endif %}
+                  </a>
+                </div>
+                <div class="col-xs-12 col-sm-8">
+                  <span><i>{{ event.event_city }},{{ event.event_country }}</i></span>
+                  <a rel="nofollow" href="{{ event.website }}" target="_blank"><h2>{{event.name}}</h2></a>
+
+                  <span class="date">{{ event.start_date|date('F d Y')  }}</span>
+                  <a rel="nofollow" href="{{ event.website }}" target="_blank" class="btn btn-default btn-blue">More Details</a>
+                </div>
+              </li>
+              {% endfor %}
+              </ul>
+              </div>
+              <iframe class="airtable-embed" src="https://airtable.com/embed/shrAtQcxjL14q57un?backgroundColor=transparent&viewControls=on" frameborder="0" onmousewheel="" width="100%" height="900" style="background: transparent; border: 1px solid #ccc;"></iframe>
+
+            {# if cms.events|where('event_type','Webinar') != '' #}
+            <h3>Webinars</h3>
+            <div class="row">
+              <ul class="conferences paginate">
+              {% for event in cms.events|sort('start_date', true)|where('event_type','Webinar')|where('featured',true)|slice(0, 1) %}
+              <li class="col-xs-12 featured">
+                <script type="application/ld+json">
+                  {
+                    "@context": "http://schema.org",
+                    "@type": "Event",
+                    "name": "{{event.name}}",
+                    "startDate" : "{{event.start_date}}",
+                    "url" : "{{ event.website }}",
+                    "location" : {
+                      "@type" : "Place",
+                      "sameAs" : "",
+                      "name" : "{{ event.website }}",
+                      "address" : "{{ item.address }}"
+                    }
+                  }
+                </script>
+                <div class="col-xs-12 col-sm-4">
+                  <a rel="nofollow" href="{{event.website}}">
+                    {% if event.image.url %}
+                      <img class="img-responsive img-full" src="http://res.cloudinary.com/postscapes/image/fetch/c_scale,co_rgb:1d1d1d,dn_111,q_61,w_1.0/{{ getSetting('site_url') }}{{ event.image.url }}" />
+                    {% else %}
+                      <img class="img-responsive img-full" src="http://res.cloudinary.com/postscapes/image/fetch/c_scale,co_rgb:1d1d1d,dn_111,q_61,w_1.0/{{ getSetting('site_url') }}/static/images/360.png" />
+                    {% endif %}
+                  </a>
+                </div>
+                <div class="col-xs-12 col-sm-8">
+                  <span><i>{{ event.event_city }},{{ event.event_country }}</i></span>
+                  <a rel="nofollow" href="{{ event.website }}" target="_blank"><h2>{{event.name}}</h2></a>
+
+                  <span class="date">{{ event.start_date|date('F d Y')  }}</span>
+                  <a rel="nofollow" href="{{ event.website }}" target="_blank" class="btn btn-default btn-blue">More Details</a>
+                </div>
+              </li>
+              {% endfor %}
+              </ul>
+            </div>
+            <iframe class="airtable-embed" src="https://airtable.com/embed/shraGWHjUzQIbEC1c?backgroundColor=transparent&layout=card&viewControls=on" frameborder="0" onmousewheel="" width="100%" height="533" style="background: transparent; border: 1px solid #ccc;"></iframe>
+            <!--<h3>Meetups</h3>
+            <div class="row">
+              <ul class="conferences paginate">
+              {% for event in cms.events|sort('start_date', true)|where('event_type','Meetup')|where('featured',true)|slice(0, 1) %}
+              <li class="col-xs-12 featured">
+                <script type="application/ld+json">
+                  {
+                    "@context": "http://schema.org",
+                    "@type": "Event",
+                    "name": "{{event.name}}",
+                    "startDate" : "{{event.start_date}}",
+                    "url" : "{{ event.website }}",
+                    "location" : {
+                      "@type" : "Place",
+                      "sameAs" : "",
+                      "name" : "{{ event.website }}",
+                      "address" : "{{ item.address }}"
+                    }
+                  }
+                </script>
+                <div class="col-xs-12 col-sm-4">
+                  <a rel="nofollow" href="{{event.website}}">
+                    {% if event.image.url %}
+                      <img class="img-responsive img-full" src="http://res.cloudinary.com/postscapes/image/fetch/c_scale,co_rgb:1d1d1d,dn_111,q_61,w_1.0/{{ getSetting('site_url') }}{{ event.image.url }}" />
+                    {% else %}
+                      <img class="img-responsive img-full" src="http://res.cloudinary.com/postscapes/image/fetch/c_scale,co_rgb:1d1d1d,dn_111,q_61,w_1.0/{{ getSetting('site_url') }}/static/images/360.png" />
+                    {% endif %}
+                  </a>
+                </div>
+                <div class="col-xs-12 col-sm-8">
+                  <span><i>{{ event.event_city }},{{ event.event_country }}</i></span>
+                  <a rel="nofollow" href="{{ event.website }}" target="_blank"><h2>{{event.name}}</h2></a>
+
+                  <span class="date">{{ event.start_date|date('F d Y')  }}</span>
+                  <a rel="nofollow" href="{{ event.website }}" target="_blank" class="btn btn-default btn-blue">More Details</a>
+                </div>
+              </li>
+              {% endfor %}
+              </ul>
+              </div>
+              <iframe class="airtable-embed" src="https://airtable.com/embed/shroyhYycNLabMKZU?backgroundColor=transparent&layout=card&viewControls=on" frameborder="0" onmousewheel="" width="100%" height="533" style="background: transparent; border: 1px solid #ccc;"></iframe>
+        -->  </div>
+        </div>
+        <div class="col-xs-12 banner">
+          <ul class="col-xs-12 slides">
+          {% set banners = cms.banner|sort('publish_date', true) %}
+          {% for banner in banners %}
+          <li class="col-xs-12 banner-single">
+            <a rel="nofollow" class="col-xs-12" href="{{banner.link}}" style="background:{{banner.cta_background_color }};display:block;">
+              <div class="col-xs-12 col-sm-8">
+                <img class="img-responsive img-full" src="https://res.cloudinary.com/postscapes/image/fetch/q_80/{{ getSetting('site_url') }}{{banner.image.url}}" width="720" height="90" />
+              </div>
+              <div class="col-sm-4 hidden-xs">
+                <div class="valign">
+                  <span>Advertisement</span>
+                  {{ banner.call_to_action|safe }}
+                </div>
+              </div>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}

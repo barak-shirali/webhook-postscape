@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <script>
+            function loopOnArrayWithDelay(theArray, delayAmount, i, theFunction, onComplete) {
+                if (i < theArray.length && typeof delayAmount == 'number') {
+
+                    theFunction(theArray[i], i);
+
+                    setTimeout(function() {
+
+                        loopOnArrayWithDelay(theArray, delayAmount, (i + 1), theFunction, onComplete)
+                    }, delayAmount);
+                } else {
+
+                    onComplete(i);
+                }
+            }
+            var posts;
+            var i;
+            var j = 0;
+            var k = 0;
+            var nodePostData = {
+                "apple_app_rating": "",
+                "google_app_rating": ""
+            };
+
+            function getPostsFromWebHook() {
+                loopOnArrayWithDelay(posts, 1500, 0, function(e, i) {
+                    if (posts[i].apple_app_id) {
+                        getAppData("apple", posts[i].apple_app_id, posts[i]._id);
+                        console.log('apple radi' + posts[i]._id)
+                    }
+                    if (posts[i].google_app_id) {
+                        getAppData("google", posts[i].google_app_id, posts[i]._id);
+                        console.log('google radi' + posts[i]._id)
+                    }
+                }, function(i) {
+                    console.log('Done')
+                });
+                // for (i = 0; i < 1; ++i) {    if (posts[i].apple_app_id) {        getAppData("apple", posts[i].apple_app_id, posts[i]._id);        console.log('apple radi' + posts[i]._id)    }    if (posts[i].google_app_id) {        getAppData("google",
+                // posts[i].google_app_id, posts[i]._id);        console.log('google radi' + posts[i]._id)    }    //getAppData("google","com.redphx.deviceid",posts[0]._id); }
+            }
+
+            function getAppData(store, appid, nodeid) {
+                $.ajax({
+                    type: "GET",
+                    url: "https://apps.p.mashape.com/" + store + "/application/" + appid,
+                    dataType: 'json',
+                    async: true,
+                    headers: {
+                        "X-Mashape-Key": "TRUVsdkNirmshtiQ6JiI15EW5chtp1DK5AMjsnPRRtt0KWpiOT",
+                        "Authorization": "Token token=36909fefcde679fd65d9e230b8f02a75",
+                        "Accept": "application/json"
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        if (store == "apple") {
+                            if (data["data"]["rating"]["average"]) {
+                                nodePostData["apple_app_rating"] = data["data"]["rating"]["average"];
+                            } else {
+                                nodePostData["apple_app_rating"] = '';
+                            }
+                            if(data["data"]["url"]){
+                                nodePostData["apple_app_url"] = data["data"]["url"];
+                            }else{
+                                nodePostData["apple_app_url"] = '';
+                            }
+                            j++;
+                            $('.apple-reviews span').text(j);
+                        }
+                        if (store == "google") {
+                            if(data["data"]["rating"]["average"]){
+                                nodePostData["google_app_rating"] = data["data"]["rating"]["average"];
+                            }else{
+                                nodePostData["google_app_rating"] = '';
+                            }
+                            if(data["data"]["url"]){
+                                nodePostData["google_app_url"] = data["data"]["url"];
+                            }else{
+                                nodePostData["google_app_url"] = '';
+                            }
+                            k++;
+                            $('.google-reviews span').text(k);
+                        }
+                        sendToWebhook(nodeid);
+                    }
+                });
+            }
+
+            function sendToWebhook(id) {
+                $.ajax({
+                    type: "POST",
+                    url: "https://server.webhook.com/update-item/?site=postscapes2&apiKey=fc75caf3-ff3f-4b42-9d36-93843690bf6e&type=node&id=" + id,
+                    dataType: 'json',
+                    async: true,
+                    data: nodePostData,
+                    success: function() {
+                        console.log(nodePostData);
+                        console.log('radi');
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            }
+            $(document).ready(function() {
+                $.ajax({
+                    type: "GET",
+                    url: "http://postscapes2.webhook.org/node-json",
+                    dataType: 'json',
+                    async: true,
+                    success: function(data) {
+                        posts = data;
+                        getPostsFromWebHook();
+                    }
+                });
+            });
+        </script>
+    </head>
+
+    <body>
+        <div class="results">
+            <p class="apple-reviews">Apple Review Items:
+                <span>0</span>
+            </p>
+            <p class="google-reviews">Google Review Items:
+                <span>0</span>
+            </p>
+        </div>
+    </body>
+
+</html>

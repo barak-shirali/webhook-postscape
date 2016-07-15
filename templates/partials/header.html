@@ -1,0 +1,30 @@
+{# Simple search form, remove from search index #}
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{ getSetting('site_url') }}"><img src="/static/images/logo.png" width="867" height="157" alt="Postscapes Logo"/></a>
+
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+      <form class="navbar-form navbar-right" role="search" action="/search-results/" method="get" data-search-index="false">
+       <input type="text" class="form-control" name="q" placeholder="Search" id="tipue_search_input" />
+       <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+       <li><a href="http://about.postscapes.com/">About</a></li>
+       <li><a>-</a></li>
+       <li><a href="http://about.postscapes.com/contact">Contact</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>

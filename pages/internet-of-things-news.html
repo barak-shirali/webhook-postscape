@@ -1,0 +1,122 @@
+{# ------------------------------------------------------- #}
+
+{# Webhook uses the SWIG.js (like Djagno/Twig) templating system. Their documentation is here: #}
+{# http://paularmstrong.github.io/swig/docs/tags/ #}
+
+{# Learn about calling data into Webhook pages here: #}
+{# http://www.webhook.com/docs/template-rules-and-filters/ #}
+
+{# ------------------------------------------------------- #}
+
+{# Confused what extends and blocks do? Watch a primer: #}
+{# http://www.webhook.com/docs/template-inheritance-blocks/ #}
+{% extends "templates/partials/base.html" %}
+
+{# This sets our page <title>. It will append "- Homepage" to the site title defined in base. #}
+{% block title %}Latest IoT News and Resources{% endblock %}
+{% block meta %}<meta name="description" content="Stay up to date with daily updates on investments, products and companies in the Internet of Things market...">{% endblock %}
+{% block content %}
+  <div class="row padding30">
+    <div class="row pulseinvestments">
+      <div class="col-xs-12 banner">
+        <ul class="col-xs-12 slides">
+        {% set banners = cms.banner|sort('publish_date', true) %}
+        {% for banner in banners %}
+        <li class="col-xs-12 banner-single">
+          <a rel="nofollow" class="col-xs-12" href="{{banner.link}}" style="background:{{banner.cta_background_color }};display:block;">
+            <div class="col-xs-12 col-sm-8">
+              <img class="img-responsive img-full" src="https://res.cloudinary.com/postscapes/image/fetch/q_80/{{ getSetting('site_url') }}{{banner.image.url}}" width="720" height="90" />
+            </div>
+            <div class="col-sm-4 hidden-xs">
+              <div class="valign">
+                <span>Advertisement</span>
+                {{ banner.call_to_action|safe }}
+              </div>
+            </div>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+      </div>
+        <div class="col-xs-12">
+          <h3>Latest</h3>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>
+
+                </th>
+                <th>
+                  Title
+                </th>
+                <th>
+                  Date
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for pulse in cms.pulse|sort('pulse_pub_date', true)|where("sponsored",true)|slice(0,3) %}
+                <tr class="pulsefeaturedtable">
+                  <td class="image">
+                    {% if pulse.screengrab_image %}
+                    <a rel="nofollow" href="{{ item.source_link }}"><img class="img-responsive img-iotn" src="http://res.cloudinary.com/postscapes/image/fetch/q_56,w_200,h_150,c_fill/{{ pulse.screengrab_image.resize_url }}" /></a>
+                    {% endif %}
+                  </td>
+                  <td class="title">
+                    <a rel="nofollow" href="{{ item.source_link }}">
+                      {{ pulse.name }}
+                      </a>
+                      <a rel="nofollow" href="{{ item.source_link }}"><div class="description">{{ pulse.description_|safe|truncate(150) }}</div>
+                      <span class="sponsor">Sponsor Post</span></a>
+
+                  </td>
+                  <td class="date">
+                    {{ pulse.pulse_pub_date|date('M d Y')  }}
+                  </td>
+                </tr>
+              {% endfor %}
+              {% for pulse in cms.pulse|sort('pulse_pub_date', true) %}
+                <tr>
+                  <td class="image">
+                    {% if pulse.screengrab_image %}
+                    <a href="{{ url(pulse) }}"><img class="img-responsive img-iotn" src="http://res.cloudinary.com/postscapes/image/fetch/q_56,w_200,h_150,c_fill/{{ pulse.screengrab_image.resize_url }}" /></a>
+                    {% endif %}
+                  </td>
+                  <td class="title">
+                    <a href="{{ url(pulse) }}">
+                      {{ pulse.name }}
+                      <div class="description">{{ pulse.description_|safe|truncate(100) }}</div>
+                    </a>
+                  </td>
+                  <td class="date">
+                    {{ pulse.pulse_pub_date|date('M d Y')  }}
+                  </td>
+                </tr>
+              {% endfor %}
+          </tbody>
+          </table>
+        </div>
+        <div class="col-xs-12 banner">
+          <ul class="col-xs-12 slides">
+          {% set banners = cms.banner|sort('publish_date', true) %}
+          {% for banner in banners %}
+          <li class="col-xs-12 banner-single">
+            <a rel="nofollow" class="col-xs-12" href="{{banner.link}}" style="background:{{banner.cta_background_color }};display:block;">
+              <div class="col-xs-12 col-sm-8">
+                <img class="img-responsive img-full" src="https://res.cloudinary.com/postscapes/image/fetch/q_80/{{ getSetting('site_url') }}{{banner.image.url}}" width="720" height="90" />
+              </div>
+              <div class="col-sm-4 hidden-xs">
+                <div class="valign">
+                  <span>Advertisement</span>
+                  {{ banner.call_to_action|safe }}
+                </div>
+              </div>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}

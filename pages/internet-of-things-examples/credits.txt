@@ -1,0 +1,127 @@
+
+############ SCRIPTS / PLUGINS ###############
+
+------------------------------------------------------------------------------
+
+JQuery ~ by John Resig
+http://jquery.com/
+
+------------------------------------------------------------------------------
+
+Skeleton ~ Responsive Framework
+http://www.getskeleton.com/
+
+------------------------------------------------------------------------------
+
+ScrollTo/ One Page Nav ~ by Trevor Davis
+http://github.com/davist11/jQuery-One-Page-Nav
+
+------------------------------------------------------------------------------
+
+responsiveslides ~ by @viljamis
+http://responsiveslides.com
+
+------------------------------------------------------------------------------
+
+PrettyPhoto / LightBox ~ by Stephane Caron
+http://www.no-margin-for-errors.com/blog/2011/03/31/prettyphoto-3-1-new-theme-and-ajax-support/
+
+------------------------------------------------------------------------------
+
+Ajax Contact Form ~ Trevor Davis
+http://trevordavis.net/blog/ajax-forms-with-jquery/
+
+------------------------------------------------------------------------------
+
+jQuery Carousel ~ Richard Scarrott
+http://richardscarrott.co.uk/posts/view/jquery-carousel-plugin
+
+------------------------------------------------------------------------------
+
+JQuery Backstretch ~ Scott Robbin
+http://srobbin.com/jquery-plugins/backstretch/
+
+------------------------------------------------------------------------------
+
+JQuery FitVids ~ Chris Coyier and Paravel
+http://fitvidsjs.com/
+
+------------------------------------------------------------------------------
+
+Jribbble ~ Tyler Gaw 
+http://lab.tylergaw.com/jribbble/
+
+------------------------------------------------------------------------------
+
+jQuery Easing ~ George McGinley Smith 
+http://gsgd.co.uk/sandbox/jquery/easing/
+
+------------------------------------------------------------------------------
+
+Equal Heights Plugin ~ Rob Glazebrook
+cssnewbie.com
+
+------------------------------------------------------------------------------
+
+jQuery Google Maps ~ Shawn Mayzes
+http://www.mayzes.org/js/jquery.googlemaps1.01.js
+
+------------------------------------------------------------------------------
+
+Tipsy ~ Johnny Tran
+http://onehackoranother.com
+
+------------------------------------------------------------------------------
+
+Bootstrap ~ Twitter
+http://twitter.github.com/bootstrap/
+
+------------------------------------------------------------------------------
+
+reset.css
+http://meyerweb.com/eric/tools/css/reset
+
+------------------------------------------------------------------------------
+
+
+
+############ FONTS ###############
+
+------------------------------------------------------------------------------
+
+Google Font: Lato ~ Łukasz Dziedzic
+http://www.google.com/webfonts/specimen/Lato
+
+------------------------------------------------------------------------------
+
+
+
+############ PLACEHOLDER IMAGES / ICONS ###############
+
+------------------------------------------------------------------------------
+
+All Placeholder Images / Graphics ~ Copyrighted To Their Respective Owners.
+
+http://dribbble.com/shots/769471-Owl?list=popular&offset=465
+http://dribbble.com/shots/770252-DDBOMB?list=popular&offset=461
+http://dribbble.com/shots/769826-Illustration-Preview?list=popular&offset=360
+http://dribbble.com/shots/769520-what-i-wore-today?list=popular&offset=349
+http://dribbble.com/shots/769533-Coffee?list=popular&offset=264
+http://dribbble.com/shots/770255-Pen-Hand?list=popular&offset=220
+http://dribbble.com/shots/769161-Bears?list=popular&offset=84
+http://dribbble.com/shots/769414-Sketch-Monkey-Horse?list=popular&offset=54
+http://dribbble.com/shots/769904-Share?list=popular&offset=43
+http://dribbble.com/shots/769278-Skyebird-the-final-version?list=popular&offset=17
+http://dribbble.com/shots/769248-New-World?list=popular&offset=3
+http://dribbble.com/shots/326887-The-Cosmonaut
+http://dribbble.com/shots/577993-Motorcycle-Illustration
+
+
+------------------------------------------------------------------------------
+
+Icons  ~ by YummyGum, Picol
+http://iconsweets.com/
+http://www.picol.org/
+
+------------------------------------------------------------------------------
+

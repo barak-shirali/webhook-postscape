@@ -1,0 +1,43 @@
+/* 
+SINGLET CUSTOM STYLESHEET
+--------------------------
+
+Instructions:
+
+Add your custom styles in this file instead of style.css so it 
+is easier to update the theme. Simply copy an existing style 
+from style.css to this file, and modify it to your liking. */
+
+
+/* 	ASSIGN CUSTOM FONT FOR HEADING */
+
+#qcFS h2, #qcFS h3, #qcPrimaryNav ul li a, #qcIntroCarousel h4, .qcCarouselOverlay h4, .qcEmployeeName, h1, h2, h3, h4, h5, h6, .qcPageTitle, .rslides_content p, .rslides_content a {
+	font-family: 'Lato', sans-serif;
+}
+
+/* 	ASSIGN CUSTOM FONT FOR CONTENT */
+
+body, p {
+	font: 12px/20px 'Arial', sans-serif;
+}
+
+/* 	ASSIGN CUSTOM PRIMARY HIGHLIGHT COLOR */
+
+.qcPostFormat.standard.hover, .qcPostFormat.gallery.hover, .qcPostFormat.video.hover, .qcPageTitle  {
+	background-color: orange;
+}
+#qcFS h1, .qcCarouselOverlay p, a, a:hover, #fb_count:hover, #twitter_count:hover, #dribbble_count:hover, .qcBlogEntry h3 a:hover, .pagination a:hover {
+	color: orange;
+}
+a:hover, #fb_count:hover, #twitter_count:hover, #dribbble_count:hover, .qcBlogEntry h3 a:hover, .pagination a:hover {
+	border-color: orange;
+}
+
+/* 	ASSIGN CUSTOM PAGE HEADING BACKGROUND COLOR */
+
+.qcPageTitle.portfoliopage { background: #ffa800 }
+.qcPageTitle.servicepage { background: #029ecb }
+.qcPageTitle.aboutpage { background: #66a91e }
+.qcPageTitle.blogpage { background: #654f96 }
+.qcPageTitle.clientpage { background: #029ecb }
+.qcPageTitle.contactpage { background: #ffa800 }

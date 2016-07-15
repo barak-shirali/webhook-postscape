@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{% set posttypes = cms.node %}
+{% for object in posttypes|sort('publish_date', true) %}
+  {% if object.post %}
+    <url>
+      <loc>{{ getSetting('site_url') }}{{ url(object) }}</loc>
+      <lastmod>{{ object.publish_date }}</lastmod>
+    </url>
+  {% endif %}
+{% endfor %}
+</urlset>

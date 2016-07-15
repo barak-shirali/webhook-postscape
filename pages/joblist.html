@@ -1,0 +1,78 @@
+{# ------------------------------------------------------- #}
+
+{# Webhook uses the SWIG.js (like Djagno/Twig) templating system. Their documentation is here: #}
+{# http://paularmstrong.github.io/swig/docs/tags/ #}
+
+{# Learn about calling data into Webhook pages here: #}
+{# http://www.webhook.com/docs/template-rules-and-filters/ #}
+
+{# ------------------------------------------------------- #}
+
+{# Confused what extends and blocks do? Watch a primer: #}
+{# http://www.webhook.com/docs/template-inheritance-blocks/ #}
+{% extends "templates/partials/base.html" %}
+
+{# This sets our page <title>. It will append "- Homepage" to the site title defined in base. #}
+{% block title %}2016 IoT Jobs{% endblock %}
+{% block description %}Find your next IoT related job, or star talent for that open position...{% endblock %}
+{% block content %}
+  <div class="row padding30">
+    <div class="row pulsejobs">
+        <div class="col-xs-12 col-sm-3 left joblistcontainer">
+          <div class="joblist">
+            <div class="col-xs-8">
+              <h2>Internet of Things Jobs</h2>
+            </div>
+
+            <a href="http://about.postscapes.com/iot-job-posting" class="btn btn-default">Post a Job</a>
+            <div class="indeed">
+              <a href="http://www.indeed.com/">jobs by</a> <img src="http://www.indeed.com/p/jobsearch.gif" />
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-9 right">
+          {% for job in cms.job %}
+          {% if job.purchased_featured %}
+          <div class="col-xs-12 featured">
+            <div class="col-xs-8">
+              <div class="pull-left">
+                <h4>{{ job.company }}</h4>
+                <a rel="nofollow" href="{{ job.website }}"><h3>{{ job.name }}</h3></a>
+              </div>
+            </div>
+            <div class="valign">
+              <div class="pull-right">
+                <h5>{{ job.city }},{{ job.state }},{{ job.country }}</h5>
+                <h5>{{ job.date_posted|date('M d Y') }} | {{ job.job_type }}</h5>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+          <iframe class="airtable-embed" src="https://airtable.com/embed/shrCtgtAxSVb2b4M8?backgroundColor=transparent&layout=card&viewControls=on" frameborder="0" onmousewheel="" width="100%" height="533" style="background: transparent; border: 1px solid #ccc;"></iframe>
+        </div>
+
+        <div class="col-xs-12 banner">
+          <ul class="col-xs-12 slides">
+          {% set banners = cms.banner|sort('publish_date', true) %}
+          {% for banner in banners %}
+          <li class="col-xs-12 banner-single">
+            <a rel="nofollow" class="col-xs-12" href="{{banner.link}}" style="background:{{banner.cta_background_color }};display:block;">
+              <div class="col-xs-12 col-sm-8">
+                <img class="img-responsive img-full" src="https://res.cloudinary.com/postscapes/image/fetch/q_80/{{ getSetting('site_url') }}{{banner.image.url}}" width="720" height="90" />
+              </div>
+              <div class="col-sm-4 hidden-xs">
+                <div class="valign">
+                  <span>Advertisement</span>
+                  {{ banner.call_to_action|safe }}
+                </div>
+              </div>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}

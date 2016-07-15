@@ -1,0 +1,67 @@
+<div class="footer row">
+  <div class="col-xs-12 col-sm-4 footer-logo">
+    <a href="http://postscapes.com"><img class="img-responsive" src="/static/images/footer-logo-postscapes.png" width="167" height="32" alt="Postscapes Logo" /></a>
+    <p>Navigate Your Connected World</p>
+  </div>
+  <div class="col-xs-12 col-sm-2">
+    <h3>Tools</h3>
+    <ul>
+      {% for item in cms.menu.footer_1 %}
+        <li><a href="{{ item.link }}">{{ item.name }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="col-xs-12 col-sm-2">
+    <h3>Pulse</h3>
+    <ul>
+      {% for item in cms.menu.footer_2 %}
+        <li><a href="{{ item.link }}">{{ item.name }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="col-xs-12 col-sm-4">
+    <h3>Weekly Spotlight</h3>
+    <form class="form-view" id="agile-form" action="https://postscapes.agilecrm.com/formsubmit" method="GET">
+      <fieldset>
+        <div style="display: none; height: 0px; width: 0px;">
+          <input type="hidden" id="_agile_form_name" name="_agile_form_name" value="Newsletter">
+          <input type="hidden" id="_agile_domain" name="_agile_domain" value="postscapes">
+          <input type="hidden" id="_agile_api" name="_agile_api" value="pj514bir9siobn62q07pt1hv6p">
+          <input type="hidden" id="_agile_redirect_url" name="_agile_redirect_url" value="#">
+          <input type="hidden" id="_agile_form_id_tags" name="tags" value="">
+        </div>
+        <!-- Text input-->
+        <div class="required-control col-xs-12 col-sm-12 col-md-8">
+          <div class="agile-field-xlarge agile-field">
+            <input id="name" name="first_name" type="text" placeholder="First Name" class="form-control" required="">
+          </div>
+          <div class="agile-custom-clear"></div>
+        </div>
+        <!-- Text input-->
+        <div class="required-control col-xs-12 col-sm-12 col-md-8">
+          <div class="agile-field-xlarge agile-field">
+            <input id="textinput" name="email" type="email" placeholder="E-mail" class="form-control" required="">
+          </div>
+          <div class="agile-custom-clear"></div>
+        </div>
+        <!-- Button -->
+        <div class="agile-group col-xs-12 col-sm-12 col-md-4">
+          <div class="agile-field">
+            <button type="submit" class="agile-button">Subscribe</button>
+            <span id="agile-error-msg"></span>
+          </div>
+        </div>
+
+      </fieldset>
+    </form>
+    <script type="text/javascript">
+      (function(a){var b=a.onload,p=false;if(p){a.onload="function"!=typeof b?function(){try{_agile_load_form_fields()}catch(a){}}:function(){b();try{_agile_load_form_fields()}catch(a){}}};a.document.forms["agile-form"].onsubmit=function(a){a.preventDefault();try{_agile_synch_form_v3()}catch(b){this.submit()}}})(window);
+    </script>
+    <a href="https://plus.google.com/106271647025707392595/posts"><i class="fa fa-google-plus"></i></a>
+    <a href="http://www.twitter.com/postscapes"><i class="fa fa-twitter"></i></a>
+    <a href="https://www.facebook.com/Postscapes/"><i class="fa fa-facebook"></i></a>
+    <a href="https://www.linkedin.com/company/postscapes"><i class="fa fa-linkedin"></i></a>
+    <a href="http://feeds.feedburner.com/iot"><i class="fa fa-rss"></i></a>
+  </div>
+</div>
